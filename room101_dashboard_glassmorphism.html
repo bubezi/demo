@@ -1,0 +1,710 @@
+
+<style>
+  :root {
+    --glass-bg: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --glass-bg-hover: rgba(255,255,255,0.10);
+    --emerald: #1D9E75;
+    --emerald-light: #5DCAA5;
+    --emerald-glow: rgba(29,158,117,0.35);
+    --emerald-glow-soft: rgba(29,158,117,0.15);
+    --teal-bright: #5DCAA5;
+    --surface: #09090f;
+    --surface2: #0f1420;
+    --text-primary: #f0f4f8;
+    --text-muted: #8b96a8;
+    --text-dim: #4a5568;
+    --gold: #EF9F27;
+    --gold-glow: rgba(239,159,39,0.3);
+    --red-accent: #E24B4A;
+    --blue-accent: #378ADD;
+  }
+
+  .r101-wrap {
+    background: linear-gradient(135deg, #09090f 0%, #0d1526 50%, #091a14 100%);
+    min-height: 700px;
+    font-family: 'Inter', Arial, sans-serif;
+    color: var(--text-primary);
+    padding: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .r101-wrap::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: -120px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .r101-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 14px;
+  }
+
+  .glass-strong {
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 14px;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    background: rgba(9,9,15,0.7);
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 10;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-logo-icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--emerald), #085041);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 14px var(--emerald-glow);
+    font-size: 18px;
+  }
+
+  .nav-links {
+    display: flex; gap: 6px;
+  }
+
+  .nav-link {
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-link.active {
+    background: rgba(29,158,117,0.15);
+    color: var(--teal-bright);
+    border: 1px solid rgba(29,158,117,0.25);
+  }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .notif-btn {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; color: var(--text-muted);
+    font-size: 16px;
+  }
+
+  .notif-dot {
+    width: 7px; height: 7px;
+    background: var(--emerald);
+    border-radius: 50%;
+    position: absolute; top: 6px; right: 6px;
+    box-shadow: 0 0 6px var(--emerald-glow);
+  }
+
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--emerald), #085041);
+    border: 2px solid rgba(29,158,117,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 0 10px var(--emerald-glow-soft);
+  }
+
+  /* LAYOUT */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    gap: 16px;
+    padding: 18px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SIDEBAR LEFT */
+  .sidebar {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .sidebar-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 0 4px;
+    margin-bottom: 2px;
+  }
+
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sidebar-item.active {
+    background: rgba(29,158,117,0.14);
+    color: var(--teal-bright);
+    border: 1px solid rgba(29,158,117,0.22);
+  }
+  .sidebar-item i { font-size: 16px; }
+
+  .wallet-card {
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(29,158,117,0.18), rgba(8,80,65,0.25));
+    border: 1px solid rgba(29,158,117,0.3);
+    box-shadow: 0 0 20px rgba(29,158,117,0.1);
+  }
+
+  .wallet-label { font-size: 10px; color: var(--emerald-light); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px; }
+  .wallet-amount { font-size: 22px; font-weight: 700; color: #fff; }
+  .wallet-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .wallet-actions {
+    display: flex; gap: 8px; margin-top: 12px;
+  }
+  .wallet-btn {
+    flex: 1;
+    padding: 7px 0;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+  }
+  .wallet-btn.primary {
+    background: var(--emerald);
+    color: #fff;
+    box-shadow: 0 0 10px var(--emerald-glow-soft);
+  }
+  .wallet-btn.secondary {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-muted);
+  }
+
+  /* CENTER */
+  .center-col { display: flex; flex-direction: column; gap: 16px; }
+
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .section-title { font-size: 14px; font-weight: 600; }
+  .section-link { font-size: 12px; color: var(--emerald-light); cursor: pointer; }
+
+  /* STAT STRIP */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+    border-radius: 12px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+
+  .stat-card.emerald {
+    background: linear-gradient(135deg, rgba(29,158,117,0.18), rgba(8,80,65,0.22));
+    border: 1px solid rgba(29,158,117,0.28);
+    box-shadow: 0 0 16px rgba(29,158,117,0.08);
+  }
+  .stat-card.gold {
+    background: linear-gradient(135deg, rgba(239,159,39,0.15), rgba(99,56,6,0.2));
+    border: 1px solid rgba(239,159,39,0.25);
+    box-shadow: 0 0 16px rgba(239,159,39,0.06);
+  }
+  .stat-card.blue {
+    background: linear-gradient(135deg, rgba(55,138,221,0.15), rgba(12,68,124,0.2));
+    border: 1px solid rgba(55,138,221,0.25);
+    box-shadow: 0 0 16px rgba(55,138,221,0.06);
+  }
+
+  .stat-icon { font-size: 18px; margin-bottom: 4px; }
+  .stat-icon.e { color: var(--teal-bright); }
+  .stat-icon.g { color: var(--gold); }
+  .stat-icon.b { color: var(--blue-accent); }
+  .stat-val { font-size: 20px; font-weight: 700; }
+  .stat-lbl { font-size: 11px; color: var(--text-muted); }
+  .stat-delta { font-size: 11px; margin-top: 2px; }
+  .stat-delta.up { color: var(--teal-bright); }
+  .stat-delta.dn { color: var(--red-accent); }
+
+  /* GAME CARDS */
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .game-card {
+    padding: 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .game-card:hover::before { opacity: 1; }
+
+  .game-card.chess {
+    background: linear-gradient(135deg, rgba(55,138,221,0.12), rgba(9,9,15,0.6));
+    border: 1px solid rgba(55,138,221,0.2);
+  }
+  .game-card.chess::before { background: rgba(55,138,221,0.06); }
+
+  .game-card.ludo {
+    background: linear-gradient(135deg, rgba(239,159,39,0.12), rgba(9,9,15,0.6));
+    border: 1px solid rgba(239,159,39,0.2);
+  }
+  .game-card.ludo::before { background: rgba(239,159,39,0.06); }
+
+  .game-card.uno {
+    background: linear-gradient(135deg, rgba(226,75,74,0.12), rgba(9,9,15,0.6));
+    border: 1px solid rgba(226,75,74,0.2);
+  }
+  .game-card.uno::before { background: rgba(226,75,74,0.06); }
+
+  .game-card.checkers {
+    background: linear-gradient(135deg, rgba(29,158,117,0.12), rgba(9,9,15,0.6));
+    border: 1px solid rgba(29,158,117,0.2);
+  }
+  .game-card.checkers::before { background: rgba(29,158,117,0.06); }
+
+  .game-card-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+  .game-card-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .game-card-sub { font-size: 11px; color: var(--text-muted); }
+  .game-badge {
+    position: absolute; top: 10px; right: 10px;
+    padding: 3px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 600;
+  }
+  .game-badge.live {
+    background: rgba(29,158,117,0.2);
+    color: var(--teal-bright);
+    border: 1px solid rgba(29,158,117,0.3);
+  }
+  .game-badge.hot {
+    background: rgba(226,75,74,0.2);
+    color: #F09595;
+    border: 1px solid rgba(226,75,74,0.3);
+  }
+
+  /* ACTIVE ROOMS */
+  .room-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .room-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .room-item:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(29,158,117,0.25);
+  }
+
+  .room-left { display: flex; align-items: center; gap: 10px; }
+  .room-icon { font-size: 20px; }
+  .room-name { font-size: 13px; font-weight: 500; }
+  .room-host { font-size: 11px; color: var(--text-muted); }
+
+  .room-right { display: flex; align-items: center; gap: 10px; }
+  .room-players { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+  .room-stake {
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+  }
+  .room-stake.bronze { background: rgba(161,127,83,0.2); color: #c8a96a; border: 1px solid rgba(161,127,83,0.3); }
+  .room-stake.silver { background: rgba(180,178,169,0.15); color: #c8c6be; border: 1px solid rgba(180,178,169,0.3); }
+  .room-stake.gold { background: rgba(239,159,39,0.2); color: var(--gold); border: 1px solid rgba(239,159,39,0.3); }
+
+  /* RIGHT SIDEBAR */
+  .right-sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+  .friends-list { display: flex; flex-direction: column; gap: 8px; }
+  .friend-item { display: flex; align-items: center; gap: 9px; }
+  .friend-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .fa-em { background: rgba(29,158,117,0.25); color: var(--teal-bright); border: 1px solid rgba(29,158,117,0.3); }
+  .fa-bl { background: rgba(55,138,221,0.25); color: #85B7EB; border: 1px solid rgba(55,138,221,0.3); }
+  .fa-gd { background: rgba(239,159,39,0.25); color: var(--gold); border: 1px solid rgba(239,159,39,0.3); }
+  .fa-rd { background: rgba(226,75,74,0.2); color: #F09595; border: 1px solid rgba(226,75,74,0.3); }
+  .fa-pr { background: rgba(127,119,221,0.2); color: #AFA9EC; border: 1px solid rgba(127,119,221,0.3); }
+
+  .friend-info { flex: 1; min-width: 0; }
+  .friend-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .friend-status { font-size: 10px; color: var(--text-muted); }
+  .online-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .online-dot.on { background: var(--emerald); box-shadow: 0 0 5px var(--emerald-glow); }
+  .online-dot.off { background: var(--text-dim); }
+
+  .notif-list { display: flex; flex-direction: column; gap: 7px; }
+  .notif-item {
+    padding: 9px 11px;
+    border-radius: 9px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .notif-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+  .notif-icon.em { color: var(--teal-bright); }
+  .notif-icon.gd { color: var(--gold); }
+  .notif-icon.bl { color: var(--blue-accent); }
+  .notif-body { color: var(--text-muted); line-height: 1.4; }
+  .notif-body strong { color: var(--text-primary); font-weight: 500; }
+  .notif-time { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+  .ai-card {
+    padding: 13px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(127,119,221,0.12), rgba(38,33,92,0.2));
+    border: 1px solid rgba(127,119,221,0.25);
+    box-shadow: 0 0 16px rgba(127,119,221,0.06);
+  }
+  .ai-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .ai-icon { font-size: 18px; color: #AFA9EC; }
+  .ai-title { font-size: 13px; font-weight: 600; color: #CECBF6; }
+  .ai-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .ai-prompt {
+    margin-top: 9px;
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(127,119,221,0.2);
+    font-size: 11px;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .ai-prompt i { font-size: 14px; color: #AFA9EC; }
+
+  .live-pulse {
+    display: inline-block;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--emerald);
+    box-shadow: 0 0 0 0 var(--emerald-glow);
+    animation: pulse 2s infinite;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 var(--emerald-glow); }
+    70% { box-shadow: 0 0 0 6px rgba(29,158,117,0); }
+    100% { box-shadow: 0 0 0 0 rgba(29,158,117,0); }
+  }
+</style>
+
+<div class="r101-wrap">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">♟</div>
+      <span>Room<span style="color:var(--teal-bright)">101</span></span>
+    </div>
+    <div class="nav-links">
+      <div class="nav-link active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Lobby</div>
+      <div class="nav-link"><i class="ti ti-trophy" aria-hidden="true"></i> Leaderboard</div>
+      <div class="nav-link"><i class="ti ti-message-circle" aria-hidden="true"></i> Community</div>
+      <div class="nav-link"><i class="ti ti-user" aria-hidden="true"></i> Profile</div>
+    </div>
+    <div class="nav-right">
+      <div class="notif-btn"><i class="ti ti-bell" aria-hidden="true"></i><div class="notif-dot"></div></div>
+      <div class="avatar">RV</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="wallet-card">
+        <div class="wallet-label">Balance</div>
+        <div class="wallet-amount">$248.50</div>
+        <div class="wallet-sub"><span class="live-pulse"></span>Live account</div>
+        <div class="wallet-actions">
+          <div class="wallet-btn primary">Deposit</div>
+          <div class="wallet-btn secondary">Withdraw</div>
+        </div>
+      </div>
+
+      <div style="margin-top:4px">
+        <div class="sidebar-section-label">Navigate</div>
+        <div class="sidebar-item active"><i class="ti ti-layout-grid" aria-hidden="true"></i> Dashboard</div>
+        <div class="sidebar-item"><i class="ti ti-device-gamepad-2" aria-hidden="true"></i> My Games</div>
+        <div class="sidebar-item"><i class="ti ti-users" aria-hidden="true"></i> Friends</div>
+        <div class="sidebar-item"><i class="ti ti-chart-bar" aria-hidden="true"></i> Stats</div>
+        <div class="sidebar-item"><i class="ti ti-settings" aria-hidden="true"></i> Settings</div>
+      </div>
+    </aside>
+
+    <!-- CENTER -->
+    <div class="center-col">
+
+      <!-- STAT STRIP -->
+      <div class="stat-strip">
+        <div class="stat-card emerald glass">
+          <i class="ti ti-trophy stat-icon e" aria-hidden="true"></i>
+          <div class="stat-val">34</div>
+          <div class="stat-lbl">Total wins</div>
+          <div class="stat-delta up">↑ 5 this week</div>
+        </div>
+        <div class="stat-card gold glass">
+          <i class="ti ti-coin stat-icon g" aria-hidden="true"></i>
+          <div class="stat-val">$1,240</div>
+          <div class="stat-lbl">Total earned</div>
+          <div class="stat-delta up">↑ $80 today</div>
+        </div>
+        <div class="stat-card blue glass">
+          <i class="ti ti-flame stat-icon b" aria-hidden="true"></i>
+          <div class="stat-val">7</div>
+          <div class="stat-lbl">Win streak</div>
+          <div class="stat-delta dn">↓ Best was 12</div>
+        </div>
+      </div>
+
+      <!-- GAME TILES -->
+      <div class="glass" style="padding:14px">
+        <div class="section-header">
+          <span class="section-title">Choose a game</span>
+          <span class="section-link">See all →</span>
+        </div>
+        <div class="game-grid">
+          <div class="game-card chess">
+            <span class="game-card-emoji">♟</span>
+            <div class="game-card-name">Chess</div>
+            <div class="game-card-sub">12 rooms open</div>
+            <div class="game-badge live"><span class="live-pulse"></span>Live</div>
+          </div>
+          <div class="game-card ludo">
+            <span class="game-card-emoji">🎲</span>
+            <div class="game-card-name">Ludo</div>
+            <div class="game-card-sub">8 rooms open</div>
+            <div class="game-badge hot">🔥 Hot</div>
+          </div>
+          <div class="game-card uno">
+            <span class="game-card-emoji">🃏</span>
+            <div class="game-card-name">UNO</div>
+            <div class="game-card-sub">21 rooms open</div>
+            <div class="game-badge hot">🔥 Hot</div>
+          </div>
+          <div class="game-card checkers">
+            <span class="game-card-emoji">🔴</span>
+            <div class="game-card-name">Checkers</div>
+            <div class="game-card-sub">5 rooms open</div>
+            <div class="game-badge live"><span class="live-pulse"></span>Live</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVE ROOMS -->
+      <div class="glass" style="padding:14px">
+        <div class="section-header">
+          <span class="section-title"><span class="live-pulse"></span>Active rooms</span>
+          <span class="section-link">Browse all →</span>
+        </div>
+        <div class="room-list">
+          <div class="room-item">
+            <div class="room-left">
+              <span class="room-icon">♟</span>
+              <div>
+                <div class="room-name">Grandmaster's Den</div>
+                <div class="room-host">Host: Kimani_K</div>
+              </div>
+            </div>
+            <div class="room-right">
+              <div class="room-players"><i class="ti ti-users" style="font-size:13px" aria-hidden="true"></i> 1/2</div>
+              <div class="room-stake gold">$50</div>
+            </div>
+          </div>
+          <div class="room-item">
+            <div class="room-left">
+              <span class="room-icon">🃏</span>
+              <div>
+                <div class="room-name">UNO Showdown</div>
+                <div class="room-host">Host: Aisha_M</div>
+              </div>
+            </div>
+            <div class="room-right">
+              <div class="room-players"><i class="ti ti-users" style="font-size:13px" aria-hidden="true"></i> 3/4</div>
+              <div class="room-stake silver">$20</div>
+            </div>
+          </div>
+          <div class="room-item">
+            <div class="room-left">
+              <span class="room-icon">🎲</span>
+              <div>
+                <div class="room-name">Ludo Legends</div>
+                <div class="room-host">Host: Raven</div>
+              </div>
+            </div>
+            <div class="room-right">
+              <div class="room-players"><i class="ti ti-users" style="font-size:13px" aria-hidden="true"></i> 2/4</div>
+              <div class="room-stake bronze">$10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="right-sidebar">
+
+      <!-- FRIENDS -->
+      <div class="glass" style="padding:13px">
+        <div class="section-header" style="margin-bottom:10px">
+          <span class="section-title" style="font-size:13px">Friends</span>
+          <span class="section-link">All →</span>
+        </div>
+        <div class="friends-list">
+          <div class="friend-item">
+            <div class="friend-avatar fa-em">KK</div>
+            <div class="friend-info">
+              <div class="friend-name">Kimani_K</div>
+              <div class="friend-status">In a Chess match</div>
+            </div>
+            <div class="online-dot on"></div>
+          </div>
+          <div class="friend-item">
+            <div class="friend-avatar fa-bl">AM</div>
+            <div class="friend-info">
+              <div class="friend-name">Aisha_M</div>
+              <div class="friend-status">Hosting UNO</div>
+            </div>
+            <div class="online-dot on"></div>
+          </div>
+          <div class="friend-item">
+            <div class="friend-avatar fa-gd">JP</div>
+            <div class="friend-info">
+              <div class="friend-name">Jabari_P</div>
+              <div class="friend-status">Browsing lobby</div>
+            </div>
+            <div class="online-dot on"></div>
+          </div>
+          <div class="friend-item">
+            <div class="friend-avatar fa-rd">ZN</div>
+            <div class="friend-info">
+              <div class="friend-name">Zara_N</div>
+              <div class="friend-status">Offline · 2h ago</div>
+            </div>
+            <div class="online-dot off"></div>
+          </div>
+          <div class="friend-item">
+            <div class="friend-avatar fa-pr">OD</div>
+            <div class="friend-info">
+              <div class="friend-name">Olu_D</div>
+              <div class="friend-status">Offline · 5h ago</div>
+            </div>
+            <div class="online-dot off"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="glass" style="padding:13px">
+        <div class="section-header" style="margin-bottom:8px">
+          <span class="section-title" style="font-size:13px">Recent</span>
+        </div>
+        <div class="notif-list">
+          <div class="notif-item">
+            <i class="ti ti-trophy notif-icon em" aria-hidden="true"></i>
+            <div>
+              <div class="notif-body"><strong>You won!</strong> Chess vs Kimani_K</div>
+              <div class="notif-time">2 min ago · +$50</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <i class="ti ti-user-plus notif-icon bl" aria-hidden="true"></i>
+            <div>
+              <div class="notif-body"><strong>Jabari_P</strong> sent a friend request</div>
+              <div class="notif-time">18 min ago</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <i class="ti ti-coin notif-icon gd" aria-hidden="true"></i>
+            <div>
+              <div class="notif-body">Payout of <strong>$80</strong> processed</div>
+              <div class="notif-time">1h ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI ASSISTANT -->
+      <div class="ai-card">
+        <div class="ai-header">
+          <i class="ti ti-brain ai-icon" aria-hidden="true"></i>
+          <span class="ai-title">AI Assistant</span>
+        </div>
+        <div class="ai-text">Your Chess win rate is up 14% this month. Try the Queen's Gambit to extend your streak.</div>
+        <div class="ai-prompt">
+          <i class="ti ti-message" aria-hidden="true"></i>
+          Ask the assistant...
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
